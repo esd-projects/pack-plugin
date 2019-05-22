@@ -20,14 +20,17 @@ class PackConfig extends PortConfig
      */
     protected $packTool;
 
-    public function buildConfig(): array
+    /**
+     * @throws \ESD\BaseServer\Server\Exception\ConfigException
+     */
+    public function merge()
     {
         if ($this->isOpenWebsocketProtocol() && $this->packTool == null) {
             $this->packTool = NonJsonPack::class;
         } else if (!$this->isOpenHttpProtocol() && $this->packTool == null) {
             $this->packTool = LenJsonPack::class;
         }
-        return parent::buildConfig();
+        parent::merge();
     }
 
     /**
