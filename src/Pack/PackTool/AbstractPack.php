@@ -10,7 +10,7 @@ namespace ESD\Plugins\Pack\PackTool;
 
 
 use ESD\BaseServer\Server\Config\PortConfig;
-use ESD\Plugins\EasyRoute\PackException;
+use ESD\Plugins\Pack\PackException;
 
 abstract class AbstractPack implements IPack
 {
@@ -35,8 +35,9 @@ abstract class AbstractPack implements IPack
      * @return int
      * @throws PackException
      */
-    protected function getLength(string $type){
-        switch ($type){
+    protected function getLength(string $type)
+    {
+        switch ($type) {
             case "c":
                 return 1;
             case "C":

@@ -11,7 +11,7 @@ namespace ESD\Plugins\Pack\PackTool;
 use ESD\BaseServer\Plugins\Logger\GetLogger;
 use ESD\BaseServer\Server\Config\PortConfig;
 use ESD\Plugins\Pack\ClientData;
-use ESD\Plugins\EasyRoute\PackException;
+use ESD\Plugins\Pack\PackException;
 
 /**
  * 不支持package_length_offset
