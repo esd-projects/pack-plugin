@@ -87,6 +87,7 @@ class PackAspect implements Aspect
         $packConfig = $this->packConfigs[$abstractServerPort->getPortConfig()->getPort()];
         $packTool = $this->packTools[$packConfig->getPackTool()];
         $clientData = $packTool->unPack($fd, $data, $packConfig);
+        if ($clientData == null) return;
         setContextValue("ClientData", $clientData);
         $invocation->proceed();
         return;
@@ -107,6 +108,7 @@ class PackAspect implements Aspect
         $packConfig = $this->packConfigs[$abstractServerPort->getPortConfig()->getPort()];
         $packTool = $this->packTools[$packConfig->getPackTool()];
         $clientData = $packTool->unPack($frame->getFd(), $frame->getData(), $packConfig);
+        if ($clientData == null) return;
         setContextValue("ClientData", $clientData);
         $invocation->proceed();
         return;
@@ -126,6 +128,7 @@ class PackAspect implements Aspect
         $packConfig = $this->packConfigs[$abstractServerPort->getPortConfig()->getPort()];
         $packTool = $this->packTools[$packConfig->getPackTool()];
         $clientData = $packTool->unPack(-1, $data, $packConfig);
+        if ($clientData == null) return;
         $clientData->setUdpClientInfo($clientInfo);
         setContextValue("ClientData", $clientData);
         $invocation->proceed();

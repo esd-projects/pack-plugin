@@ -11,7 +11,6 @@ namespace ESD\Plugins\Pack\PackTool;
 use ESD\BaseServer\Plugins\Logger\GetLogger;
 use ESD\BaseServer\Server\Config\PortConfig;
 use ESD\Plugins\Pack\ClientData;
-use ESD\Plugins\Pack\PackException;
 
 class EofJsonPack extends AbstractPack
 {
@@ -59,15 +58,15 @@ class EofJsonPack extends AbstractPack
      * @param string $data
      * @param PortConfig $portConfig
      * @return mixed
-     * @throws PackException
      * @throws \ESD\BaseServer\Server\Exception\ConfigException
      */
-    public function unPack(int $fd, string $data, PortConfig $portConfig): ClientData
+    public function unPack(int $fd, string $data, PortConfig $portConfig): ?ClientData
     {
         $this->portConfig = $portConfig;
         $value = json_decode($this->decode($data), true);
         if (empty($value)) {
-            throw new PackException('json unPack 失败');
+            $this->warn('json unPack 失败');
+            return null;
         }
         $clientData = new ClientData($fd, $portConfig->getBaseType(), $value['p'], $value);
         return $clientData;

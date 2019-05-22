@@ -11,7 +11,6 @@ namespace ESD\Plugins\Pack\PackTool;
 use ESD\BaseServer\Plugins\Logger\GetLogger;
 use ESD\BaseServer\Server\Config\PortConfig;
 use ESD\Plugins\Pack\ClientData;
-use ESD\Plugins\Pack\PackException;
 
 class NonJsonPack implements IPack
 {
@@ -33,14 +32,14 @@ class NonJsonPack implements IPack
      * @param string $data
      * @param PortConfig $portConfig
      * @return ClientData
-     * @throws PackException
      * @throws \ESD\BaseServer\Server\Exception\ConfigException
      */
-    public function unPack(int $fd, string $data, PortConfig $portConfig): ClientData
+    public function unPack(int $fd, string $data, PortConfig $portConfig): ?ClientData
     {
         $value = json_decode($data, true);
         if (empty($value)) {
-            throw new PackException('json unPack 失败');
+            $this->warn('json unPack 失败');
+            return null;
         }
         $clientData = new ClientData($fd, $portConfig->getBaseType(), $value['p'], $value);
         return $clientData;
