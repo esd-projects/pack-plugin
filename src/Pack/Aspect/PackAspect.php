@@ -12,14 +12,14 @@ namespace ESD\Plugins\Pack\Aspect;
 use ESD\BaseServer\Plugins\Logger\GetLogger;
 use ESD\BaseServer\Server\Beans\Request;
 use ESD\BaseServer\Server\Server;
+use ESD\Plugins\Aop\OrderAspect;
 use ESD\Plugins\Pack\ClientData;
 use ESD\Plugins\Pack\PackConfig;
 use ESD\Plugins\Pack\PackTool\IPack;
-use Go\Aop\Aspect;
 use Go\Aop\Intercept\MethodInvocation;
 use Go\Lang\Annotation\Around;
 
-class PackAspect implements Aspect
+class PackAspect extends OrderAspect
 {
     use GetLogger;
     /**
@@ -153,5 +153,13 @@ class PackAspect implements Aspect
         } else {
             return Server::$instance->send($fd, $data);
         }
+    }
+
+    /**
+     * @return string
+     */
+    public function getName(): string
+    {
+        return "PackAspect";
     }
 }
