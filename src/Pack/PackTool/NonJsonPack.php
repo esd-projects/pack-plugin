@@ -8,8 +8,8 @@
 
 namespace ESD\Plugins\Pack\PackTool;
 
-use ESD\BaseServer\Plugins\Logger\GetLogger;
-use ESD\BaseServer\Server\Config\PortConfig;
+use ESD\Core\Plugins\Logger\GetLogger;
+use ESD\Core\Server\Config\PortConfig;
 use ESD\Plugins\Pack\ClientData;
 
 class NonJsonPack implements IPack
@@ -32,7 +32,9 @@ class NonJsonPack implements IPack
      * @param string $data
      * @param PortConfig $portConfig
      * @return ClientData
-     * @throws \ESD\BaseServer\Server\Exception\ConfigException
+     * @throws \DI\DependencyException
+     * @throws \DI\NotFoundException
+     * @throws \ESD\Core\Plugins\Config\ConfigException
      */
     public function unPack(int $fd, string $data, PortConfig $portConfig): ?ClientData
     {

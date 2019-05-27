@@ -9,10 +9,10 @@
 namespace ESD\Plugins\Pack;
 
 
-use ESD\BaseServer\Server\Beans\ClientInfo;
-use ESD\BaseServer\Server\Beans\Request;
-use ESD\BaseServer\Server\Beans\Response;
-use ESD\BaseServer\Server\Server;
+use ESD\Core\Server\Beans\ClientInfo;
+use ESD\Core\Server\Beans\Request;
+use ESD\Core\Server\Beans\Response;
+use ESD\Core\Server\Server;
 
 class ClientData
 {

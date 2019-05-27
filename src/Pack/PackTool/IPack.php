@@ -2,7 +2,7 @@
 
 namespace ESD\Plugins\Pack\PackTool;
 
-use ESD\BaseServer\Server\Config\PortConfig;
+use ESD\Core\Server\Config\PortConfig;
 use ESD\Plugins\Pack\ClientData;
 
 /**

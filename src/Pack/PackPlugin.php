@@ -9,11 +9,11 @@
 namespace ESD\Plugins\Pack;
 
 
-use ESD\BaseServer\Server\Config\PortConfig;
-use ESD\BaseServer\Server\Context;
-use ESD\BaseServer\Server\Plugin\AbstractPlugin;
-use ESD\BaseServer\Server\PlugIn\PluginInterfaceManager;
-use ESD\BaseServer\Server\Server;
+use ESD\Core\Server\Config\PortConfig;
+use ESD\Core\Context\Context;
+use ESD\Core\Plugin\AbstractPlugin;
+use ESD\Core\Plugin\PluginInterfaceManager;
+use ESD\Core\Server\Server;
 use ESD\Plugins\Aop\AopConfig;
 use ESD\Plugins\Aop\AopPlugin;
 use ESD\Plugins\Pack\Aspect\PackAspect;
@@ -33,6 +33,7 @@ class PackPlugin extends AbstractPlugin
     /**
      * EasyRoutePlugin constructor.
      * @throws \DI\DependencyException
+     * @throws \DI\NotFoundException
      */
     public function __construct()
     {
@@ -55,7 +56,8 @@ class PackPlugin extends AbstractPlugin
      * @return mixed|void
      * @throws \DI\DependencyException
      * @throws \DI\NotFoundException
-     * @throws \ESD\BaseServer\Exception
+     * @throws \ESD\Core\Plugins\Config\ConfigException
+     * @throws \ESD\Core\Exception
      * @throws \ReflectionException
      */
     public function init(Context $context)
@@ -69,8 +71,8 @@ class PackPlugin extends AbstractPlugin
             $packConfig->merge();
             $this->packConfigs[$packConfig->getPort()] = $packConfig;
         }
-        $serverConfig = $context->getServer()->getServerConfig();
-        $aopConfig = Server::$instance->getContainer()->get(AopConfig::class);
+        $serverConfig = Server::$instance->getServerConfig();
+        $aopConfig = DIget(AopConfig::class);
         $aopConfig->addIncludePath($serverConfig->getVendorDir() . "/esd/base-server");
         $this->packAspect = new PackAspect($this->packConfigs);
         $aopConfig->addAspect($this->packAspect);
@@ -80,7 +82,8 @@ class PackPlugin extends AbstractPlugin
      * @param PluginInterfaceManager $pluginInterfaceManager
      * @return mixed|void
      * @throws \DI\DependencyException
-     * @throws \ESD\BaseServer\Exception
+     * @throws \DI\NotFoundException
+     * @throws \ESD\Core\Exception
      * @throws \ReflectionException
      */
     public function onAdded(PluginInterfaceManager $pluginInterfaceManager)
@@ -102,7 +105,6 @@ class PackPlugin extends AbstractPlugin
     /**
      * 在进程启动前
      * @param Context $context
-     * @return mixed
      */
     public function beforeProcessStart(Context $context)
     {
