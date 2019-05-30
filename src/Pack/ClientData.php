@@ -10,8 +10,8 @@ namespace ESD\Plugins\Pack;
 
 
 use ESD\Core\Server\Beans\ClientInfo;
-use ESD\Core\Server\Beans\AbstractRequest;
-use ESD\Core\Server\Beans\AbstractResponse;
+use ESD\Core\Server\Beans\Request;
+use ESD\Core\Server\Beans\Response;
 use ESD\Core\Server\Server;
 
 class ClientData
@@ -35,12 +35,12 @@ class ClientData
      */
     protected $clientInfo;
     /**
-     * @var AbstractRequest
+     * @var Request
      */
     protected $request;
 
     /**
-     * @var AbstractResponse
+     * @var Response
      */
     protected $response;
 
@@ -164,33 +164,33 @@ class ClientData
     }
 
     /**
-     * @param AbstractRequest $request
+     * @param Request $request
      */
-    public function setRequest(AbstractRequest $request): void
+    public function setRequest(Request $request): void
     {
         $this->request = $request;
     }
 
     /**
-     * @return AbstractRequest
+     * @return Request
      */
-    public function getRequest(): ?AbstractRequest
+    public function getRequest(): ?Request
     {
         return $this->request;
     }
 
     /**
-     * @return AbstractResponse
+     * @return Response
      */
-    public function getResponse(): ?AbstractResponse
+    public function getResponse(): ?Response
     {
         return $this->response;
     }
 
     /**
-     * @param AbstractResponse $response
+     * @param Response $response
      */
-    public function setResponse(AbstractResponse $response): void
+    public function setResponse(Response $response): void
     {
         $this->response = $response;
     }
