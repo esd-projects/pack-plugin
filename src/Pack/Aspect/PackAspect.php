@@ -10,7 +10,7 @@ namespace ESD\Plugins\Pack\Aspect;
 
 
 use ESD\Core\Plugins\Logger\GetLogger;
-use ESD\Core\Server\Beans\Request;
+use ESD\Core\Server\Beans\AbstractRequest;
 use ESD\Core\Server\Server;
 use ESD\Plugins\Aop\OrderAspect;
 use ESD\Plugins\Pack\ClientData;
@@ -59,11 +59,14 @@ class PackAspect extends OrderAspect
      */
     protected function aroundHttpRequest(MethodInvocation $invocation)
     {
+        /**
+         * @var $request AbstractRequest
+         */
         list($request, $response) = $invocation->getArguments();
-        $clientData = new ClientData($request->fd,
-            $request->getServer(Request::SERVER_REQUEST_METHOD),
-            $request->getServer(Request::SERVER_PATH_INFO),
-            $request->getData());
+        $clientData = new ClientData($request->getFd(),
+            $request->getMethod(),
+            $request->getUri()->getPath(),
+            $request->getBody()->getContents());
         $clientData->setRequest($request);
         $clientData->setResponse($response);
         setContextValue("ClientData", $clientData);
