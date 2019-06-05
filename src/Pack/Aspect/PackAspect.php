@@ -9,9 +9,9 @@
 namespace ESD\Plugins\Pack\Aspect;
 
 
-use ESD\BaseServer\Plugins\Logger\GetLogger;
-use ESD\BaseServer\Server\Beans\Request;
-use ESD\BaseServer\Server\Server;
+use ESD\Core\Plugins\Logger\GetLogger;
+use ESD\Core\Server\Beans\Request;
+use ESD\Core\Server\Server;
 use ESD\Plugins\Aop\OrderAspect;
 use ESD\Plugins\Pack\ClientData;
 use ESD\Plugins\Pack\PackConfig;
@@ -44,7 +44,7 @@ class PackAspect extends OrderAspect
             if (!empty($packConfig->getPackTool())) {
                 if (!isset($this->packTools[$packConfig->getPackTool()])) {
                     $className = $packConfig->getPackTool();
-                    $this->packTools[$packConfig->getPackTool()] = Server::$instance->getContainer()->get($className);
+                    $this->packTools[$packConfig->getPackTool()] = DIget($className);
                 }
             }
         }
@@ -54,17 +54,19 @@ class PackAspect extends OrderAspect
      * around onHttpRequest
      *
      * @param MethodInvocation $invocation Invocation
-     * @throws \ESD\BaseServer\Exception
      * @throws \Throwable
-     * @Around("within(ESD\BaseServer\Server\IServerPort+) && execution(public **->onHttpRequest(*))")
+     * @Around("within(ESD\Core\Server\Port\IServerPort+) && execution(public **->onHttpRequest(*))")
      */
     protected function aroundHttpRequest(MethodInvocation $invocation)
     {
+        /**
+         * @var $request Request
+         */
         list($request, $response) = $invocation->getArguments();
-        $clientData = new ClientData($request->fd,
-            $request->getServer(Request::SERVER_REQUEST_METHOD),
-            $request->getServer(Request::SERVER_PATH_INFO),
-            $request->getData());
+        $clientData = new ClientData($request->getFd(),
+            $request->getMethod(),
+            $request->getUri()->getPath(),
+            $request->getBody()->getContents());
         $clientData->setRequest($request);
         $clientData->setResponse($response);
         setContextValue("ClientData", $clientData);
@@ -76,9 +78,8 @@ class PackAspect extends OrderAspect
      * around onTcpReceive
      *
      * @param MethodInvocation $invocation Invocation
-     * @throws \ESD\BaseServer\Exception
      * @throws \Throwable
-     * @Around("within(ESD\BaseServer\Server\IServerPort+) && execution(public **->onTcpReceive(*))")
+     * @Around("within(ESD\Core\Server\Port\IServerPort+) && execution(public **->onTcpReceive(*))")
      */
     protected function aroundTcpReceive(MethodInvocation $invocation)
     {
@@ -97,9 +98,8 @@ class PackAspect extends OrderAspect
      * around onWsMessage
      *
      * @param MethodInvocation $invocation Invocation
-     * @throws \ESD\BaseServer\Exception
      * @throws \Throwable
-     * @Around("within(ESD\BaseServer\Server\IServerPort+) && execution(public **->onWsMessage(*))")
+     * @Around("within(ESD\Core\Server\Port\IServerPort+) && execution(public **->onWsMessage(*))")
      */
     protected function aroundWsMessage(MethodInvocation $invocation)
     {
@@ -118,7 +118,7 @@ class PackAspect extends OrderAspect
      * around onUdpPacket
      *
      * @param MethodInvocation $invocation Invocation
-     * @Around("within(ESD\BaseServer\Server\IServerPort+) && execution(public **->onUdpPacket(*))")
+     * @Around("within(ESD\Core\Server\Port\IServerPort+) && execution(public **->onUdpPacket(*))")
      * @throws \Throwable
      */
     protected function aroundUdpPacket(MethodInvocation $invocation)

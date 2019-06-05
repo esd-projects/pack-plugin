@@ -9,7 +9,7 @@
 namespace ESD\Plugins\Pack;
 
 
-use ESD\BaseServer\Server\Server;
+use ESD\Core\Server\Server;
 use ESD\Plugins\Pack\Aspect\PackAspect;
 
 trait GetBoostSend

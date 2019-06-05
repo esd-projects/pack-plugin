@@ -8,8 +8,8 @@
 
 namespace ESD\Plugins\Pack\PackTool;
 
-use ESD\BaseServer\Plugins\Logger\GetLogger;
-use ESD\BaseServer\Server\Config\PortConfig;
+use ESD\Core\Plugins\Logger\GetLogger;
+use ESD\Core\Server\Config\PortConfig;
 use ESD\Plugins\Pack\ClientData;
 use ESD\Plugins\Pack\PackException;
 
@@ -62,8 +62,10 @@ class LenJsonPack extends AbstractPack
      * @param string $data
      * @param PortConfig $portConfig
      * @return ClientData
-     * @throws \ESD\BaseServer\Server\Exception\ConfigException
      * @throws PackException
+     * @throws \DI\DependencyException
+     * @throws \DI\NotFoundException
+     * @throws \ESD\Core\Plugins\Config\ConfigException
      */
     public function unPack(int $fd, string $data, PortConfig $portConfig): ?ClientData
     {

@@ -9,7 +9,7 @@
 namespace ESD\Plugins\Pack;
 
 
-use ESD\BaseServer\Server\Config\PortConfig;
+use ESD\Core\Server\Config\PortConfig;
 use ESD\Plugins\Pack\PackTool\LenJsonPack;
 use ESD\Plugins\Pack\PackTool\NonJsonPack;
 
@@ -21,7 +21,9 @@ class PackConfig extends PortConfig
     protected $packTool;
 
     /**
-     * @throws \ESD\BaseServer\Server\Exception\ConfigException
+     * @throws \DI\DependencyException
+     * @throws \DI\NotFoundException
+     * @throws \ESD\Core\Plugins\Config\ConfigException
      */
     public function merge()
     {

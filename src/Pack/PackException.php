@@ -9,7 +9,7 @@
 namespace ESD\Plugins\Pack;
 
 
-use ESD\BaseServer\Exception;
+use ESD\Core\Exception;
 
 class PackException extends Exception
 {
