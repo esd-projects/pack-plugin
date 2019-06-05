@@ -22,7 +22,7 @@ class NonJsonPack implements IPack
      * @param string|null $topic
      * @return false|string
      */
-    public function pack(string $data, PortConfig $portConfig, ?string $topic = null)
+    public function pack($data, PortConfig $portConfig, ?string $topic = null)
     {
         return json_encode($data, JSON_UNESCAPED_UNICODE);
     }

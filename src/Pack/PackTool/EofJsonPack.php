@@ -46,7 +46,7 @@ class EofJsonPack extends AbstractPack
      * @param string|null $topic
      * @return string
      */
-    public function pack(string $data, PortConfig $portConfig, ?string $topic = null)
+    public function pack($data, PortConfig $portConfig, ?string $topic = null)
     {
         $this->portConfig = $portConfig;
         return $this->encode(json_encode($data, JSON_UNESCAPED_UNICODE));

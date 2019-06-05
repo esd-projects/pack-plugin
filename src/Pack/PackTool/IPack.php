@@ -17,7 +17,7 @@ interface IPack
 
     public function decode(string $buffer);
 
-    public function pack(string $data, PortConfig $portConfig, ?string $topic = null);
+    public function pack($data, PortConfig $portConfig, ?string $topic = null);
 
     public function unPack(int $fd, string $data, PortConfig $portConfig): ?ClientData;
 }
