@@ -10,6 +10,7 @@ namespace ESD\Plugins\Pack\PackTool;
 
 use ESD\Core\Plugins\Logger\GetLogger;
 use ESD\Core\Server\Config\PortConfig;
+use ESD\Core\Server\Server;
 use ESD\Plugins\Pack\ClientData;
 use ESD\Plugins\Pack\PackException;
 
@@ -63,8 +64,6 @@ class LenJsonPack extends AbstractPack
      * @param PortConfig $portConfig
      * @return ClientData
      * @throws PackException
-     * @throws \DI\DependencyException
-     * @throws \DI\NotFoundException
      * @throws \ESD\Core\Plugins\Config\ConfigException
      */
     public function unPack(int $fd, string $data, PortConfig $portConfig): ?ClientData
@@ -77,5 +76,15 @@ class LenJsonPack extends AbstractPack
         }
         $clientData = new ClientData($fd, $portConfig->getBaseType(), $value['p'], $value);
         return $clientData;
+    }
+
+    public static function changePortConfig(PortConfig $portConfig)
+    {
+        if ($portConfig->isOpenLengthCheck()) {
+            return;
+        } else {
+            Server::$instance->getLog()->warning("LenJsonPack is used but Length protocol is not enabled ,we are automatically turn on LengthCheck for you.");
+            $portConfig->setOpenLengthCheck(true);
+        }
     }
 }

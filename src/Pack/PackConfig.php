@@ -21,8 +21,6 @@ class PackConfig extends PortConfig
     protected $packTool;
 
     /**
-     * @throws \DI\DependencyException
-     * @throws \DI\NotFoundException
      * @throws \ESD\Core\Plugins\Config\ConfigException
      */
     public function merge()

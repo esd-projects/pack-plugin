@@ -20,4 +20,6 @@ interface IPack
     public function pack($data, PortConfig $portConfig, ?string $topic = null);
 
     public function unPack(int $fd, string $data, PortConfig $portConfig): ?ClientData;
+
+    public static function changePortConfig(PortConfig $portConfig);
 }

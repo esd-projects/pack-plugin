@@ -10,6 +10,7 @@ namespace ESD\Plugins\Pack\PackTool;
 
 use ESD\Core\Plugins\Logger\GetLogger;
 use ESD\Core\Server\Config\PortConfig;
+use ESD\Core\Server\Server;
 use ESD\Plugins\Pack\ClientData;
 
 class EofJsonPack extends AbstractPack
@@ -58,8 +59,6 @@ class EofJsonPack extends AbstractPack
      * @param string $data
      * @param PortConfig $portConfig
      * @return mixed
-     * @throws \DI\DependencyException
-     * @throws \DI\NotFoundException
      * @throws \ESD\Core\Plugins\Config\ConfigException
      */
     public function unPack(int $fd, string $data, PortConfig $portConfig): ?ClientData
@@ -67,10 +66,20 @@ class EofJsonPack extends AbstractPack
         $this->portConfig = $portConfig;
         $value = json_decode($this->decode($data), true);
         if (empty($value)) {
-            $this->warn('json unPack 失败');
+            $this->warn('json unPack fail');
             return null;
         }
         $clientData = new ClientData($fd, $portConfig->getBaseType(), $value['p'], $value);
         return $clientData;
+    }
+
+    public static function changePortConfig(PortConfig $portConfig)
+    {
+        if ($portConfig->isOpenEofCheck() || $portConfig->isOpenEofSplit()) {
+            return;
+        } else {
+            Server::$instance->getLog()->warning("EofJsonPack is used but EOF protocol is not enabled ,we are automatically turn on EofSplit for you.");
+            $portConfig->setOpenEofSplit(true);
+        }
     }
 }

@@ -10,6 +10,7 @@ namespace ESD\Plugins\Pack\PackTool;
 
 use ESD\Core\Plugins\Logger\GetLogger;
 use ESD\Core\Server\Config\PortConfig;
+use ESD\Core\Server\Server;
 use ESD\Plugins\Pack\ClientData;
 
 class NonJsonPack implements IPack
@@ -32,8 +33,6 @@ class NonJsonPack implements IPack
      * @param string $data
      * @param PortConfig $portConfig
      * @return ClientData
-     * @throws \DI\DependencyException
-     * @throws \DI\NotFoundException
      * @throws \ESD\Core\Plugins\Config\ConfigException
      */
     public function unPack(int $fd, string $data, PortConfig $portConfig): ?ClientData
@@ -55,5 +54,15 @@ class NonJsonPack implements IPack
     public function decode(string $buffer)
     {
         return;
+    }
+
+    public static function changePortConfig(PortConfig $portConfig)
+    {
+        if ($portConfig->isOpenWebsocketProtocol()) {
+            return;
+        } else {
+            Server::$instance->getLog()->warning("NonJsonPack is used but WebSocket protocol is not enabled ,we are automatically turn on WebsocketProtocol for you.");
+            $portConfig->setOpenWebsocketProtocol(true);
+        }
     }
 }

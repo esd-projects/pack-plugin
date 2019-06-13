@@ -9,6 +9,7 @@
 namespace ESD\Plugins\Pack;
 
 
+use ESD\Core\Exception;
 use ESD\Core\Server\Config\PortConfig;
 use ESD\Core\Context\Context;
 use ESD\Core\Plugin\AbstractPlugin;
@@ -32,8 +33,6 @@ class PackPlugin extends AbstractPlugin
 
     /**
      * EasyRoutePlugin constructor.
-     * @throws \DI\DependencyException
-     * @throws \DI\NotFoundException
      */
     public function __construct()
     {
@@ -68,6 +67,16 @@ class PackPlugin extends AbstractPlugin
             $packConfig = new PackConfig();
             $packConfig->setName($key);
             $packConfig->buildFromConfig($value);
+            //处理packtool
+            if($packConfig->getPackTool()!=null){
+                $class = $packConfig->getPackTool();
+                if(class_exists($class)){
+                    $class::changePortConfig($packConfig);
+                }else{
+                    throw new Exception("$class pack class was not found");
+                    exit(-1);
+                }
+            }
             $packConfig->merge();
             $this->packConfigs[$packConfig->getPort()] = $packConfig;
         }
@@ -81,8 +90,6 @@ class PackPlugin extends AbstractPlugin
     /**
      * @param PluginInterfaceManager $pluginInterfaceManager
      * @return mixed|void
-     * @throws \DI\DependencyException
-     * @throws \DI\NotFoundException
      * @throws \ESD\Core\Exception
      * @throws \ReflectionException
      */
