@@ -64,6 +64,10 @@ class ClientData
      */
     protected $data;
 
+    /**
+     * @var mixed
+     */
+    protected $responseRaw;
 
     /**
      * ClientData constructor.
@@ -250,5 +254,21 @@ class ClientData
     public function getFd(): ?int
     {
         return $this->fd;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getResponseRaw()
+    {
+        return $this->responseRaw;
+    }
+
+    /**
+     * @param mixed $responseRaw
+     */
+    public function setResponseRaw($responseRaw): void
+    {
+        $this->responseRaw = $responseRaw;
     }
 }
