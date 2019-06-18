@@ -144,6 +144,7 @@ class PackAspect extends OrderAspect
      */
     public function autoBoostSend($fd, $data, $topic = null): bool
     {
+        if ($data == null) return false;
         $clientInfo = Server::$instance->getClientInfo($fd);
         $packConfig = $this->packConfigs[$clientInfo->getServerPort()];
         $pack = $this->packTools[$packConfig->getPackTool()];

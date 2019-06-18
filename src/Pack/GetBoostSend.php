@@ -36,7 +36,6 @@ trait GetBoostSend
      */
     public function autoBoostSend($fd, $data, $topic = null): bool
     {
-        $this->getPackAspect()->autoBoostSend($fd, $data, $topic);
-        return false;
+        return $this->getPackAspect()->autoBoostSend($fd, $data, $topic);
     }
 }
