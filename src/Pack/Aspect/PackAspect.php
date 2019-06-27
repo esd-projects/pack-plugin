@@ -146,7 +146,8 @@ class PackAspect extends OrderAspect
     {
         if ($data == null) return false;
         $clientInfo = Server::$instance->getClientInfo($fd);
-        $packConfig = $this->packConfigs[$clientInfo->getServerPort()];
+        $packConfig = $this->packConfigs[$clientInfo->getServerPort()]??null;
+        if($packConfig==null) return false;
         $pack = $this->packTools[$packConfig->getPackTool()];
         $data = $pack->pack($data, $packConfig, $topic);
         if (Server::$instance->isEstablished($fd)) {
